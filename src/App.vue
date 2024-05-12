@@ -16,7 +16,7 @@
             <div class="">
                 <textarea name="" id="" class="resize-none border border-black text-[18px] w-[470px] h-[380px] rounded-xl p-4" v-model="notes"></textarea>
             </div>
-           <button @click="save()" class="bg-[#c4f5d3] hover:bg-[#095721] hover:text-white w-[50px] h-[50px] rounded-full text-center">Save</button>
+           <button @click="save" class="bg-[#c4f5d3] hover:bg-[#095721] hover:text-white w-[50px] h-[50px] rounded-full text-center">Save</button>
         </div>
         
 
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-  import { supabase } from '@/lib/supabaseClient'
+import { supabase } from '@/lib/supabaseClient'
 
 
 export default {
@@ -32,14 +32,12 @@ export default {
         return{
             title: '',
             notes: '',
-
         };
     },
 
-    Methods: {
+    methods: {
         async save() {
-            console.log('working')
-            const {data, error} = await supabase.from('Notes').insert('Title', 'Note')
+            const { data, error} = await supabase.from('Notes').insert([{Title: this.title, Note: this.notes}])
 
             if(error){
                 console.log(error, 'insertion was not successful')
@@ -47,6 +45,7 @@ export default {
             else{
                 console.log(data)
             }
+
         }
     }
 
